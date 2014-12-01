@@ -27,18 +27,25 @@ class F {
   }
 }
 
-class PhaserIDE extends Backbone.View<Backbone.Model> {
-  template:Template = F.loadTemplate('editor');
+class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
+  template:Template = function(...attrs:any[]) { throw "no template! :X"; return ""; };
+  subviews:{[key: string]: string} = {};
+  attrs:any;
 
   initialize(attrs:any) {
     _.bindAll(this, 'render');
+
+    this.attrs = attrs;
   }
 
-  render():PhaserIDE {
+  render():Backbone.View<T> {
     this.el.innerHTML = this.template();
-
     return this;
   }
+}
+
+class PhaserIDE extends MagicView<Backbone.Model> {
+  template:Template = F.loadTemplate('editor');
 }
 
 class MainState extends Phaser.State {
