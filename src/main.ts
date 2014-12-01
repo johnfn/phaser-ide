@@ -1,5 +1,6 @@
 /// <reference path="refs.d.ts" />
 
+// globals
 class G {
   static SCREEN_WIDTH:number = 500;
   static SCREEN_HEIGHT:number = 500;
@@ -10,11 +11,27 @@ class G {
   static game:Phaser.Game;
 }
 
-class MainState extends Phaser.State {
-    public preload():void {
-      // fw, fh, num frames,
-      this.load.spritesheet("default", "assets/default.png", 32, 32);
+var fileCache:{[key: string]: string} = {};
+
+// global functions
+class F {
+  static loadTemplate(file:string):(...atrs:any[]) => string {
+    if (!(file in fileCache)) {
+      fileCache[file] = $.ajax({
+        url: "templates/" + file + ".html",
+        async: false
+      }).responseText;
     }
+
+    return _.template(fileCache[file]);
+  }
+}
+
+class MainState extends Phaser.State {
+  public preload():void {
+    // fw, fh, num frames,
+    this.load.spritesheet("default", "assets/default.png", 32, 32);
+  }
 
   public init():void {
     G.game.stage.backgroundColor = "#356b92";

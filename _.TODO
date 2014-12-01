@@ -1,0 +1,16 @@
+  - placement of sprites by choosing images and stuff...
+  - it would then figure out what the graphics look like
+  - x and y position
+  - other settings
+  - would export a ton of base classes, which you could then extend from.
+  - individual items could have 'frames' a la flash except call them states.
+
+
+  Add a sprite:
+     ☐ Click on canvas
+       ☐ Bootstrap modal asking for image asset to use
+       ☐ I need my modal thing
+       ☐ I need my loader thing
+       ☐ Need to load the image from disk somehow... have a list of assets somewhere...
+     ☐ Add at location of canvas
+     ☐ Some sort of properties view when you click on it.
