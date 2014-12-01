@@ -7,7 +7,9 @@ class DialogWidget extends Backbone.View<Backbone.Model> {
   template:Template = F.loadTemplate('dialog-widget');
   view:Backbone.View<Backbone.Model>;
 
-  initialize(attrs:any) {
+  constructor(attrs:any) {
+    super(attrs);
+
     _.bindAll(this, 'render');
 
     this.attrs = attrs;
@@ -61,11 +63,14 @@ class DialogWidget extends Backbone.View<Backbone.Model> {
 }
 
 class ButtonWidget extends Backbone.View<Backbone.Model> {
-  tagName:string = "button";
-  className:string = "btn";
-  attrs:any = {};
+  attrs:any;
 
-  initialize(attrs:any) {
+  constructor(attrs:any) {
+    attrs.tagName = "button";
+    attrs.className += " btn";
+
+    super(attrs);
+
     _.bindAll(this, 'click', 'render');
 
     attrs.type = attrs.type || "btn-default";
