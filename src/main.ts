@@ -97,11 +97,21 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
   }
 }
 
-class InspectorProperties extends MagicView<Backbone.Model> {
+class ToolSettingsView extends MagicView<Backbone.Model> {
+  toggle():void {
+    this.$el.toggle();
+  }
+
+  hide():void {
+    this.$el.hide();
+  }
+}
+
+class InspectorProperties extends ToolSettingsView {
   template:Template = F.loadTemplate('inspector-properties');
 }
 
-class AddItemProperties extends MagicView<Backbone.Model> {
+class AddItemProperties extends ToolSettingsView {
   template:Template = F.loadTemplate('add-item-properties');
 }
 
@@ -112,6 +122,16 @@ class ToolProperties extends MagicView<Backbone.Model> {
     '.inspector-properties': (_attrs) => { return new InspectorProperties(_attrs); },
     '.add-item-properties': (_attrs) => { return new AddItemProperties(_attrs); }
   };
+
+  render():Backbone.View<Backbone.Model> {
+    super.render();
+
+    for (var subviewName in this.subviewObjects) {
+      (<ToolSettingsView> this.subviewObjects[subviewName]).hide();
+    }
+
+    return this;
+  }
 }
 
 class PhaserIDE extends MagicView<Backbone.Model> {
