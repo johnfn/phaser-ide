@@ -27,6 +27,20 @@ class F {
   }
 }
 
+class PhaserIDE extends Backbone.View<Backbone.Model> {
+  template:Template = F.loadTemplate('editor');
+
+  initialize(attrs:any) {
+    _.bindAll(this, 'render');
+  }
+
+  render():PhaserIDE {
+    this.el.innerHTML = this.template();
+
+    return this;
+  }
+}
+
 class MainState extends Phaser.State {
   public preload():void {
     // fw, fh, num frames,
@@ -53,4 +67,9 @@ class Game {
   }
 }
 
-new Game();
+$(function() {
+  var ide:PhaserIDE = new PhaserIDE({ el: $("#main-content") });
+  ide.render();
+
+  new Game();
+});
