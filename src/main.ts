@@ -14,21 +14,6 @@ class G {
 // more globals
 class Editor {
   static toolbarNames:string[] = ['Inspect', 'Add Item'];
-
-  static toolbarItems():ToolbarItemCollection {
-    // TODO: move this to ToolbarItemCollection
-    var items:string[] = Editor.toolbarNames;
-    var itemColl:ToolbarItemCollection = new ToolbarItemCollection();
-
-    for (var i = 0; i < items.length; i++) {
-      var item:ToolbarItem = new ToolbarItem();
-      item.set('name', items[i]);
-
-      itemColl.add(item);
-    }
-
-    return itemColl;
-  }
 }
 
 var fileCache:{[key: string]: string} = {};
@@ -59,7 +44,18 @@ class F {
 }
 
 class ToolbarItemCollection extends Backbone.Collection<ToolbarItem> {
+  constructor() {
+    super();
 
+    var items:string[] = Editor.toolbarNames;
+
+    for (var i = 0; i < items.length; i++) {
+      var item:ToolbarItem = new ToolbarItem();
+      item.set('name', items[i]);
+
+      this.add(item);
+    }
+  }
 }
 
 class ToolbarItem extends Backbone.Model {
@@ -103,7 +99,7 @@ class PhaserIDE extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('editor');
 
   subviews:SubviewList = {
-    '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { collection: Editor.toolbarItems() })); }
+    '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { collection: new ToolbarItemCollection() })); }
   };
 
   constructor(attrs:any) {

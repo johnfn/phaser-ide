@@ -7,8 +7,8 @@
 
 
   Add a sprite:
-     ☐ Choose what you want in toolbar
-       ☐ Set that in a model on the toolbar
+     ✔ Choose what you want in toolbar @done (14-12-01 16:22)
+       ✔ Set that in a model on the toolbar @done (14-12-01 16:22)
        ☐ Move toolbarItems() to Collection
      ☐ Click on canvas
        ☐ Bootstrap modal asking for image asset to use
