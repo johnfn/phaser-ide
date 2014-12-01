@@ -9,6 +9,7 @@ class G {
   static MAP_H:number = 500;
 
   static game:Phaser.Game;
+  static state:MainState;
   static ide:PhaserIDE;
 }
 
@@ -155,8 +156,24 @@ class SpriteCanvas extends Phaser.Group {
   }
 }
 
+class EntityModel extends Backbone.Model {
+
+}
+
+class Entity extends Phaser.Sprite {
+  model:EntityModel;
+
+  constructor(x:number, y:number) {
+    super(G.game, x, y, "default");
+
+    G.state.spriteCanvas.add(this);
+
+    this.model = new EntityModel();
+  }
+}
+
 class MainState extends Phaser.State {
-  spriteCanvas:SpriteCanvas;
+  public spriteCanvas:SpriteCanvas;
 
   public preload():void {
     // fw, fh, num frames,
@@ -184,9 +201,13 @@ class MainState extends Phaser.State {
     switch (tool.get('name')) {
       case 'Inspect':
         console.log('inspect');
+        // figure out what entity you clicked on
+        // grab it's model
+        // send it to the inspector view
         break;
       case 'Add Item':
-        console.log('add');
+        var e:Entity = new Entity(G.game.input.x, G.game.input.y);
+
         break
       default:
         throw "unsupported tool";
@@ -195,18 +216,10 @@ class MainState extends Phaser.State {
   }
 }
 
-class Game {
-  state: Phaser.State;
-
-  constructor() {
-    this.state = new MainState();
-    G.game = new Phaser.Game(G.SCREEN_WIDTH, G.SCREEN_HEIGHT, Phaser.WEBGL, "main", this.state);
-  }
-}
-
 $(function() {
   G.ide = new PhaserIDE({ el: $("#main-content") });
   G.ide.render();
 
-  new Game();
+  G.state = new MainState();
+  G.game = new Phaser.Game(G.SCREEN_WIDTH, G.SCREEN_HEIGHT, Phaser.WEBGL, "main", G.state);
 });

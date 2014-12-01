@@ -12,8 +12,9 @@
        ✔ Move toolbarItems() to Collection @done (14-12-01 16:50)
      ☐ Click on canvas
        ☐ Bootstrap modal asking for image asset to use
-       ☐ I need my modal thing
-       ☐ I need my loader thing
+       ☐ Dynamic image loadings somehow
+       ✔ I need my modal thing @done (14-12-01 18:19)
+       ✔ I need my loader thing @done (14-12-01 18:19)
        ☐ Need to load the image from disk somehow... have a list of assets somewhere...
      ☐ Add at location of canvas
      ☐ Some sort of properties view when you click on it.
