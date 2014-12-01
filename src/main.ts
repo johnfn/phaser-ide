@@ -179,10 +179,19 @@ class MainState extends Phaser.State {
   }
 
   public mouseDown() {
+    var tool:ToolbarItem = G.ide.selectedTool();
 
-    console.log("click, and... ", G.ide.selectedTool());
-
-    // G.ide.trigger('click', this.spriteCanvas, G.game.input.x, G.game.input.y);
+    switch (tool.get('name')) {
+      case 'Inspect':
+        console.log('inspect');
+        break;
+      case 'Add Item':
+        console.log('add');
+        break
+      default:
+        throw "unsupported tool";
+        break;
+    }
   }
 }
 
