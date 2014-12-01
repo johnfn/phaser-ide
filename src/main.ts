@@ -16,6 +16,7 @@ class Editor {
   static toolbarNames:string[] = ['Inspect', 'Add Item'];
 
   static toolbarItems():ToolbarItemCollection {
+    // TODO: move this to ToolbarItemCollection
     var items:string[] = Editor.toolbarNames;
     var itemColl:ToolbarItemCollection = new ToolbarItemCollection();
 
@@ -102,7 +103,7 @@ class PhaserIDE extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('editor');
 
   subviews:SubviewList = {
-    '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { 'collection': Editor.toolbarItems() })); }
+    '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { collection: Editor.toolbarItems() })); }
   };
 
   constructor(attrs:any) {
@@ -115,10 +116,18 @@ class PhaserIDE extends MagicView<Backbone.Model> {
   }
 }
 
+class SelectedToolView extends MagicView<ToolbarItem> {
+  template:Template = F.loadTemplate('selected-tool')
+}
+
 class Toolbar extends MagicListView<Backbone.Model> {
+  private _selectedTool:ToolbarItem;
+
   template:Template = F.loadTemplate('toolbar');
   subview(): typeof MagicView { return ToolbarItemView; }
-  private _selectedTool:ToolbarItem;
+  subviews:SubviewList = {
+    '.selected-tool': (_attrs) => { return new SelectedToolView(F.merge(_attrs, { model: this._selectedTool })); }
+  };
 
   constructor(attrs:any) {
     super(attrs);
@@ -129,7 +138,7 @@ class Toolbar extends MagicListView<Backbone.Model> {
   set selectedTool(val:ToolbarItem) {
     this._selectedTool = val;
 
-    console.log('set tool ' + val.toJSON());
+    this.render();
   }
 }
 
