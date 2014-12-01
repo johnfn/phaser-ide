@@ -11,6 +11,25 @@ class G {
   static game:Phaser.Game;
 }
 
+// more globals
+class Editor {
+  static toolbarNames:string[] = ['Inspect', 'Add Item'];
+
+  static toolbarItems():ToolbarItemCollection {
+    var items:string[] = Editor.toolbarNames;
+    var itemColl:ToolbarItemCollection = new ToolbarItemCollection();
+
+    for (var i = 0; i < items.length; i++) {
+      var item:ToolbarItem = new ToolbarItem();
+      item.set('name', items[i]);
+
+      itemColl.add(item);
+    }
+
+    return itemColl;
+  }
+}
+
 var fileCache:{[key: string]: string} = {};
 
 // global functions
@@ -24,6 +43,17 @@ class F {
     }
 
     return _.template(fileCache[file]);
+  }
+
+  // merge 2 objects together, returning the result.
+  // no more overwriting objects any more, that was annoying.
+  static merge(o1:any, o2:any) {
+    var result:any = {};
+
+    for (var key in o1) result[key] = o1[key];
+    for (var key in o2) result[key] = o2[key];
+
+    return result;
   }
 }
 
@@ -42,8 +72,13 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
     this.subviews = attrs.subviews || {};
   }
 
-  render():Backbone.View<T> {
+  // pull this out so we could override it in a superclass
+  renderEl():void {
     this.el.innerHTML = this.template();
+  }
+
+  render():Backbone.View<T> {
+    this.renderEl();
 
     for (var el in this.subviews) {
       var viewMaker:ViewMaker = this.subviews[el];
@@ -58,16 +93,46 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
   }
 }
 
+class ToolbarItemCollection extends Backbone.Collection<ToolbarItem> {
+
+}
+
+class ToolbarItem extends Backbone.Model {
+
+}
+
+class ToolbarItemView extends MagicView<ToolbarItem> {
+  template:Template = F.loadTemplate('tool');
+}
+
+class MagicListView<T extends Backbone.Model> extends MagicView<T> {
+  collection:Backbone.Collection<T>;
+  subview(): typeof Backbone.View { throw "need to implement subview for MagicListView!"; return undefined; }
+
+  renderEl():void {
+    this.el.innerHTML = this.template();
+
+    this.collection.each((m:T) => {
+      var subviewType:typeof Backbone.View = this.subview();
+      var subview:Backbone.View<T> = new subviewType({ model: m });
+
+      subview.setElement($("<div>").appendTo(this.$(".list-container")));
+      subview.render();
+    });
+  }
+}
+
 class PhaserIDE extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('editor');
 
   subviews:SubviewList = {
-    '.toolbar': (attrs) => { return new Toolbar(attrs); }
+    '.toolbar': (attrs) => { return new Toolbar(F.merge(attrs, { 'collection': Editor.toolbarItems() })); }
   };
 }
 
-class Toolbar extends MagicView<Backbone.Model> {
+class Toolbar extends MagicListView<Backbone.Model> {
   template:Template = F.loadTemplate('toolbar');
+  subview(): typeof Backbone.View { return ToolbarItemView; }
 }
 
 class MainState extends Phaser.State {
