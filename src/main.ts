@@ -97,11 +97,29 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
   }
 }
 
+class InspectorProperties extends MagicView<Backbone.Model> {
+  template:Template = F.loadTemplate('inspector-properties');
+}
+
+class AddItemProperties extends MagicView<Backbone.Model> {
+  template:Template = F.loadTemplate('add-item-properties');
+}
+
+class ToolProperties extends MagicView<Backbone.Model> {
+  template:Template = F.loadTemplate('tool-properties');
+
+  subviews:SubviewList = {
+    '.inspector-properties': (_attrs) => { return new InspectorProperties(_attrs); },
+    '.add-item-properties': (_attrs) => { return new AddItemProperties(_attrs); }
+  };
+}
+
 class PhaserIDE extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('editor');
 
   subviews:SubviewList = {
-    '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { collection: new ToolbarItemCollection() })); }
+    '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { collection: new ToolbarItemCollection() })); },
+    '.tool-properties': (_attrs) => { return new ToolProperties(_attrs); }
   };
 
   constructor(attrs:any) {
@@ -186,8 +204,6 @@ class MainState extends Phaser.State {
 
   public create():void {
     G.game.world.setBounds(0, 0, G.MAP_W, G.MAP_H);
-
-    // G.game.add.sprite(25, 25, "default");
 
     this.spriteCanvas = new SpriteCanvas();
     G.game.add.existing(this.spriteCanvas);

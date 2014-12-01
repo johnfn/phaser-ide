@@ -59,8 +59,14 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
 
     for (var el in this.subviews) {
       var viewMaker:ViewMaker = this.subviews[el];
+      var $el:JQuery = this.$(el);
+
+      if (!$el) {
+        throw "no el with the name " + el + " found. :(";
+      }
+
       var view:MagicView<Backbone.Model> = viewMaker({
-        el: this.$(el),
+        el: $el,
         parent: this
       });
 
