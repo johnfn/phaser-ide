@@ -7,6 +7,7 @@ interface SubviewList {[key: string]: (attrs?:any) => MagicView<Backbone.Model> 
 class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
   template:Template = function(...attrs:any[]) { throw "no template! :X"; return ""; };
   subviews:SubviewList = {};
+  subviewObjects:{[key: string]: MagicView<Backbone.Model>} = {};
   attrs:any;
   parent:MagicView<Backbone.Model>;
 
@@ -30,6 +31,14 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
     _.bindAll.apply(this, args);
   }
 
+  getSubview(el:string):MagicView<Backbone.Model> {
+    if (!(el in this.subviewObjects)) {
+      throw "no el named " + el + " in this MagicView's subviews.";
+    }
+
+    return this.subviewObjects[el];
+  }
+
   // propagate events upward to parent MagicViews
   trigger(eventName:string, ...args:any[]): any {
     var args:any[] = [eventName].concat(args);
@@ -50,12 +59,13 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
 
     for (var el in this.subviews) {
       var viewMaker:ViewMaker = this.subviews[el];
-      var view:Backbone.View<Backbone.Model> = viewMaker({
+      var view:MagicView<Backbone.Model> = viewMaker({
         el: this.$(el),
         parent: this
       });
 
       view.render();
+      this.subviewObjects[el] = view;
     }
 
     return this;

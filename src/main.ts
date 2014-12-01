@@ -76,9 +76,10 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
   }
 
   switchTool() {
-    // this.trigger('switch-tool', this.model.get('name'));
+    this.trigger('switch-tool', this.model);
 
     // TODO:: not in the right place...hah
+    /*
     this.dialog = new DialogWidget({
       title: 'Add Game Entity',
       body: 'Lets add a game entity!',
@@ -91,6 +92,7 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
       }]
     });
     this.dialog.render().$el.appendTo(this.$el);
+    */
 
     return false;
   }
@@ -106,8 +108,9 @@ class PhaserIDE extends MagicView<Backbone.Model> {
   constructor(attrs:any) {
     super(attrs);
 
-    this.listenTo(this, 'switch-tool', () => {
-      console.log('switch');
+    this.listenTo(this, 'switch-tool', (m:ToolbarItem) => {
+      var toolbar:Toolbar = <Toolbar> this.getSubview('.toolbar');
+      toolbar.selectedTool = m;
     });
   }
 }
@@ -115,6 +118,19 @@ class PhaserIDE extends MagicView<Backbone.Model> {
 class Toolbar extends MagicListView<Backbone.Model> {
   template:Template = F.loadTemplate('toolbar');
   subview(): typeof MagicView { return ToolbarItemView; }
+  private _selectedTool:ToolbarItem;
+
+  constructor(attrs:any) {
+    super(attrs);
+
+    this._selectedTool = this.collection.first();
+  }
+
+  set selectedTool(val:ToolbarItem) {
+    this._selectedTool = val;
+
+    console.log('set tool ' + val.toJSON());
+  }
 }
 
 class MainState extends Phaser.State {
