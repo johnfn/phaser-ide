@@ -32,10 +32,11 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
 
   // propagate events upward to parent MagicViews
   trigger(eventName:string, ...args:any[]): any {
-    var result:any = super.trigger(eventName, args);
+    var args:any[] = [eventName].concat(args);
+    var result:any = super.trigger.apply(this, args);
 
     if (this.parent && result !== false) {
-      this.parent.trigger(eventName, args);
+      this.parent.trigger.apply(this, args);
     }
   }
 
