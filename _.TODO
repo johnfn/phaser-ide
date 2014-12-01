@@ -9,7 +9,7 @@
   Add a sprite:
      ✔ Choose what you want in toolbar @done (14-12-01 16:22)
        ✔ Set that in a model on the toolbar @done (14-12-01 16:22)
-       ☐ Move toolbarItems() to Collection
+       ✔ Move toolbarItems() to Collection @done (14-12-01 16:50)
      ☐ Click on canvas
        ☐ Bootstrap modal asking for image asset to use
        ☐ I need my modal thing

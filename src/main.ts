@@ -9,6 +9,7 @@ class G {
   static MAP_H:number = 500;
 
   static game:Phaser.Game;
+  static ide:PhaserIDE;
 }
 
 // more globals
@@ -110,6 +111,12 @@ class PhaserIDE extends MagicView<Backbone.Model> {
       toolbar.selectedTool = m;
     });
   }
+
+  selectedTool():ToolbarItem {
+    var toolbar:Toolbar = <Toolbar> this.getSubview('.toolbar');
+
+    return toolbar.selectedTool;
+  }
 }
 
 class SelectedToolView extends MagicView<ToolbarItem> {
@@ -136,9 +143,21 @@ class Toolbar extends MagicListView<Backbone.Model> {
 
     this.render();
   }
+
+  get selectedTool():ToolbarItem {
+    return this._selectedTool;
+  }
+}
+
+class SpriteCanvas extends Phaser.Group {
+  constructor() {
+    super(G.game);
+  }
 }
 
 class MainState extends Phaser.State {
+  spriteCanvas:SpriteCanvas;
+
   public preload():void {
     // fw, fh, num frames,
     this.load.spritesheet("default", "assets/default.png", 32, 32);
@@ -151,7 +170,19 @@ class MainState extends Phaser.State {
   public create():void {
     G.game.world.setBounds(0, 0, G.MAP_W, G.MAP_H);
 
-    G.game.add.sprite(25, 25, "default");
+    // G.game.add.sprite(25, 25, "default");
+
+    this.spriteCanvas = new SpriteCanvas();
+    G.game.add.existing(this.spriteCanvas);
+
+    G.game.input.onDown.add(this.mouseDown, this);
+  }
+
+  public mouseDown() {
+
+    console.log("click, and... ", G.ide.selectedTool());
+
+    // G.ide.trigger('click', this.spriteCanvas, G.game.input.x, G.game.input.y);
   }
 }
 
@@ -165,8 +196,8 @@ class Game {
 }
 
 $(function() {
-  var ide:PhaserIDE = new PhaserIDE({ el: $("#main-content") });
-  ide.render();
+  G.ide = new PhaserIDE({ el: $("#main-content") });
+  G.ide.render();
 
   new Game();
 });
