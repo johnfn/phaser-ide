@@ -67,6 +67,7 @@ class ToolbarItem extends Backbone.Model {
 
 class ToolbarItemView extends MagicView<ToolbarItem> {
   template:Template = F.loadTemplate('tool');
+  dialog:DialogWidget;
 
   events() {
     return {
@@ -75,7 +76,21 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
   }
 
   switchTool() {
-    this.trigger('switch-tool', this.model.get('name'));
+    // this.trigger('switch-tool', this.model.get('name'));
+
+    // TODO:: not in the right place...hah
+    this.dialog = new DialogWidget({
+      title: 'Add Game Entity',
+      body: 'Lets add a game entity!',
+      buttons: [{
+        title: 'Ok!'
+      }, {
+        title: 'Cancel',
+        type: "btn-danger",
+        clickCallback: () => { console.log(' you cancelled... ya dumb'); }
+      }]
+    });
+    this.dialog.render().$el.appendTo(this.$el);
 
     return false;
   }

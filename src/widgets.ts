@@ -3,7 +3,7 @@
 interface Template { (...attrs:any[]): string; }
 
 class DialogWidget extends Backbone.View<Backbone.Model> {
-  attrs:any = {};
+  attrs:any;
   template:Template = F.loadTemplate('dialog-widget');
   view:Backbone.View<Backbone.Model>;
 
