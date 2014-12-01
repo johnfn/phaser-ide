@@ -11,11 +11,23 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
   parent:MagicView<Backbone.Model>;
 
   initialize(attrs:any) {
-    _.bindAll(this, 'render');
+    this.bindEverything();
 
     this.attrs = attrs;
     this.parent = attrs.parent || null;
     this.subviews = attrs.subviews || {};
+  }
+
+  private bindEverything() {
+    var args = [this, 'trigger', 'renderEl', 'render'];
+
+    for (var prop in this) {
+      if (_.isFunction(this[prop]) && !(prop in Backbone.View.prototype)) {
+        args.push(prop);
+      }
+    }
+
+    _.bindAll.apply(this, args);
   }
 
   // propagate events upward to parent MagicViews

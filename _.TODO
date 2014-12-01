@@ -7,6 +7,8 @@
 
 
   Add a sprite:
+     ☐ Choose what you want in toolbar
+       ☐ Set that in a model on the toolbar
      ☐ Click on canvas
        ☐ Bootstrap modal asking for image asset to use
        ☐ I need my modal thing
