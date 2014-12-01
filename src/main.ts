@@ -75,7 +75,7 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
   }
 
   switchTool() {
-    console.log('ding');
+    this.trigger('switch-tool', this.model.get('name'));
 
     return false;
   }
@@ -85,13 +85,21 @@ class PhaserIDE extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('editor');
 
   subviews:SubviewList = {
-    '.toolbar': (attrs) => { return new Toolbar(F.merge(attrs, { 'collection': Editor.toolbarItems() })); }
+    '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { 'collection': Editor.toolbarItems() })); }
   };
+
+  constructor(attrs:any) {
+    super(attrs);
+
+    this.listenTo(this, 'switch-tool', () => {
+      console.log('switch');
+    });
+  }
 }
 
 class Toolbar extends MagicListView<Backbone.Model> {
   template:Template = F.loadTemplate('toolbar');
-  subview(): typeof Backbone.View { return ToolbarItemView; }
+  subview(): typeof MagicView { return ToolbarItemView; }
 }
 
 class MainState extends Phaser.State {
