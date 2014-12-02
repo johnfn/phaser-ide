@@ -119,10 +119,12 @@ class ToolProperties extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('tool-properties');
   _selectedTool:ToolbarItem;
 
-  subviews:SubviewList = {
-    '.inspector-properties': (_attrs) => { return new InspectorProperties(_attrs); },
-    '.add-item-properties': (_attrs) => { return new AddItemProperties(_attrs); }
-  };
+  subviews():SubviewList {
+    return {
+      '.inspector-properties': (_attrs) => { return new InspectorProperties(_attrs); },
+      '.add-item-properties': (_attrs) => { return new AddItemProperties(_attrs); }
+    };
+  }
 
   render():Backbone.View<Backbone.Model> {
     super.render();
@@ -162,10 +164,12 @@ class ToolProperties extends MagicView<Backbone.Model> {
 class PhaserIDE extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('editor');
 
-  subviews:SubviewList = {
-    '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { collection: new ToolbarItemCollection() })); },
-    '.tool-properties': (_attrs) => { return new ToolProperties(_attrs); }
-  };
+  subviews():SubviewList {
+    return {
+      '.toolbar': (_attrs) => { return new Toolbar(F.merge(_attrs, { collection: new ToolbarItemCollection() })); },
+      '.tool-properties': (_attrs) => { return new ToolProperties(_attrs); }
+    };
+  }
 
   constructor(attrs:any) {
     super(attrs);
@@ -195,9 +199,11 @@ class Toolbar extends MagicListView<Backbone.Model> {
 
   template:Template = F.loadTemplate('toolbar');
   subview(): typeof MagicView { return ToolbarItemView; }
-  subviews:SubviewList = {
-    '.selected-tool': (_attrs) => { return new SelectedToolView(F.merge(_attrs, { model: this._selectedTool })); }
-  };
+  subviews():SubviewList {
+    return {
+      '.selected-tool': (_attrs) => { return new SelectedToolView(F.merge(_attrs, { model: this._selectedTool })); }
+    };
+  }
 
   constructor(attrs:any) {
     super(attrs);

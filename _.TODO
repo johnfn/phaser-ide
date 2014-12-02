@@ -16,8 +16,11 @@
        ✔ I need my modal thing @done (14-12-01 18:19)
        ✔ I need my loader thing @done (14-12-01 18:19)
        ☐ tool properties section
+       ☐ Say if there's no model.
+       ☐ Otherwise, render out the model.
        ☐ Refactoring:
-         ☐ subviews could also be a function (actually only a fn)
+         ✔ subviews could also be a function (actually only a fn) @done (14-12-01 20:19)
+         ☐ Now ToolProperties could see a refactor
        ☐ Bootstrap dialog
        ☐ Need to load the image from disk somehow...
        ☐ have a list of assets somewhere...
