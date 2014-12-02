@@ -16,8 +16,11 @@
        ✔ I need my modal thing @done (14-12-01 18:19)
        ✔ I need my loader thing @done (14-12-01 18:19)
        ☐ tool properties section
+       ☐ Refactoring:
+         ☐ subviews could also be a function (actually only a fn)
        ☐ Bootstrap dialog
        ☐ Need to load the image from disk somehow...
        ☐ have a list of assets somewhere...
+       ☐ Need to abstract out all tool-related stuff.. too much repetition
      ☐ Add at location of canvas
      ☐ Some sort of properties view when you click on it.

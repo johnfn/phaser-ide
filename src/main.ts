@@ -98,12 +98,12 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
 }
 
 class ToolSettingsView extends MagicView<Backbone.Model> {
-  toggle():void {
-    this.$el.toggle();
-  }
+  private _visible:boolean = false;
 
-  hide():void {
-    this.$el.hide();
+  set visible(val:boolean) {
+    this._visible = val;
+
+    this.$el.toggle(this._visible);
   }
 }
 
@@ -117,6 +117,7 @@ class AddItemProperties extends ToolSettingsView {
 
 class ToolProperties extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('tool-properties');
+  _selectedTool:ToolbarItem;
 
   subviews:SubviewList = {
     '.inspector-properties': (_attrs) => { return new InspectorProperties(_attrs); },
@@ -127,10 +128,34 @@ class ToolProperties extends MagicView<Backbone.Model> {
     super.render();
 
     for (var subviewName in this.subviewObjects) {
-      (<ToolSettingsView> this.subviewObjects[subviewName]).hide();
+      (<ToolSettingsView> this.subviewObjects[subviewName]).visible = false;
     }
 
     return this;
+  }
+
+  modelToClassName(tool:ToolbarItem) {
+    switch (tool.get('name')) {
+      case 'Inspect':
+        return '.inspector-properties';
+        break;
+      case 'Add Item':
+        return '.add-item-properties';
+        break;
+      default:
+        throw 'idk';
+        break;
+    }
+  }
+
+  set selectedTool(tool:ToolbarItem) {
+    if (this._selectedTool) {
+      (<ToolSettingsView> this.getSubview(this.modelToClassName(this._selectedTool))).visible = false;
+    }
+
+    this._selectedTool = tool;
+
+    (<ToolSettingsView> this.getSubview(this.modelToClassName(tool))).visible = true;
   }
 }
 
@@ -148,6 +173,9 @@ class PhaserIDE extends MagicView<Backbone.Model> {
     this.listenTo(this, 'switch-tool', (m:ToolbarItem) => {
       var toolbar:Toolbar = <Toolbar> this.getSubview('.toolbar');
       toolbar.selectedTool = m;
+
+      var properties:ToolProperties = <ToolProperties> this.getSubview('.tool-properties');
+      properties.selectedTool = m;
     });
   }
 
