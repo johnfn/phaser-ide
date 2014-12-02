@@ -1,4 +1,5 @@
 /// <reference path="main.ts" />
+/// <reference path="tools.ts" />
 /// <reference path="backbonex.ts" />
 /// <reference path="widgets.ts" />
 /// <reference path="../typings/tsd.d.ts" />
