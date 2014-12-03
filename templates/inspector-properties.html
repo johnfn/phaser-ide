@@ -5,8 +5,14 @@
     Nothing to inspect.
   </div>
 <% } else { %>
-  <div>
-    <input type="text" class="width-prop" value="<%= width %>" />
-    <input type="text" class="height-prop" value="<%= height %>" />
+  <div class="row">
+    <div class="col-sm-6">
+      <div> Width </div>
+      <input type="text" class="width-prop property" value="<%= width %>" />
+    </div>
+    <div class="col-sm-6">
+      <div> Height </div>
+      <input type="text" class="height-prop property" value="<%= height %>" />
+    </div>
   </div>
 <% } %>
