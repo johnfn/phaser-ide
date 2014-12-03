@@ -10,8 +10,8 @@ class ToolbarTypeHelpers {
     return ToolbarTypeHelpers.toolToString(tool).toLowerCase().replace(/ /g, "-");
   }
 
-  static elName(tool:ToolType):string {
-    return "." + ToolbarTypeHelpers.toolTemplate(tool);
+  static elPropertiesName(tool:ToolType):string {
+    return "." + ToolbarTypeHelpers.toolTemplate(tool) + "-properties";
   }
 
   static classType(tool:ToolType):typeof ToolSettingsView {
@@ -29,17 +29,23 @@ class ToolbarItemCollection extends Backbone.Collection<ToolbarItem> {
   constructor() {
     super();
 
-    for (var toolName in EnumEx.getValues(ToolType)) {
+    EnumEx.loopValues(ToolType, (toolName) => {
       var item:ToolbarItem = new ToolbarItem();
       item.set('name', ToolType[toolName]);
 
       this.add(item);
-    }
+    });
   }
 }
 
 class ToolbarItem extends Backbone.Model {
+  set name(val:string) {
+    this.set('name', val);
+  }
 
+  get name():string {
+    return this.get('name');
+  }
 }
 
 class ToolbarItemView extends MagicView<ToolbarItem> {
@@ -82,11 +88,13 @@ class ToolProperties extends MagicView<Backbone.Model> {
   subviews():SubviewList {
     var subviews:{[key: string]: (attrs?:any) => ToolSettingsView} = {};
 
-    for (var toolName in EnumEx.getValues(ToolType)) {
-      subviews[ToolbarTypeHelpers.elName(toolName)] = (_attrs) => {
-        return new (ToolbarTypeHelpers.classType(toolName));
+    EnumEx.loopValues(ToolType, (toolName) => {
+      subviews[ToolbarTypeHelpers.elPropertiesName(toolName)] = (_attrs) => {
+        var type = ToolbarTypeHelpers.classType(toolName);
+
+        return new type(_attrs);
       };
-    }
+    });
 
     return subviews
   }
@@ -102,7 +110,8 @@ class ToolProperties extends MagicView<Backbone.Model> {
   }
 
   public renderSelectedTool() {
-    var subview:ToolSettingsView = (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(this._selectedTool.get('name'))));
+    var type:number = ToolType[this._selectedTool.name];
+    var subview:ToolSettingsView = (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elPropertiesName(type)));
 
     subview.visible = true;
     subview.render();
@@ -110,7 +119,9 @@ class ToolProperties extends MagicView<Backbone.Model> {
 
   set selectedTool(tool:ToolbarItem) {
     if (this._selectedTool) {
-      (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(this._selectedTool.get('name')))).visible = false;
+      var type:number = ToolType[this._selectedTool.name];
+
+      (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elPropertiesName(type))).visible = false;
     }
 
     this._selectedTool = tool;
@@ -122,7 +133,7 @@ class SelectedToolView extends MagicView<ToolbarItem> {
   template:Template = F.loadTemplate('selected-tool')
 }
 
-class Toolbar extends MagicListView<Backbone.Model> {
+class Toolbar extends MagicListView<ToolbarItem> {
   private _selectedTool:ToolbarItem;
 
   template:Template = F.loadTemplate('toolbar');
