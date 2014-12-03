@@ -102,7 +102,10 @@ class ToolProperties extends MagicView<Backbone.Model> {
   }
 
   public renderSelectedTool() {
-    (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(tool.get('name')))).visible = true;
+    var subview:ToolSettingsView = (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(this._selectedTool.get('name'))));
+
+    subview.visible = true;
+    subview.render();
   }
 
   set selectedTool(tool:ToolbarItem) {
