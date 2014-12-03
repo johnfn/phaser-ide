@@ -87,6 +87,11 @@ class EntityModel extends Backbone.Model {
 
     this.width = 32;
     this.height = 32;
+
+    this.x = 0;
+    this.y = 0;
+
+    this.url = "";
   }
 
   set width(val:number) { this.set('width', val); }
@@ -94,6 +99,15 @@ class EntityModel extends Backbone.Model {
 
   set height(val:number) { this.set('height', val); }
   get height():number { return this.get('height'); }
+
+  set x(val:number) { this.set('x', val); }
+  get x():number { return this.get('x'); }
+
+  set y(val:number) { this.set('y', val); }
+  get y():number { return this.get('y'); }
+
+  set url(val:string) { this.set('url', val); }
+  get url():string { return this.get('url'); }
 }
 
 class Entity extends Phaser.Sprite {
@@ -191,10 +205,10 @@ class MainState extends Phaser.State {
         var ent:Entity = this.elemUnderMouse();
 
         if (ent !== null) {
-          G.ide.inspect(ent.getModel());
-
           ent.select(true);
         }
+
+        G.ide.inspect(ent ? ent.getModel() : null);
 
         if (this.previouslySelectedEntity) {
           this.previouslySelectedEntity.select(false);
