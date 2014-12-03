@@ -5,6 +5,18 @@
     Nothing to inspect.
   </div>
 <% } else { %>
+  <h5> Position </h5>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div> x </div>
+      <input type="text" class="x-prop property" value="<%= x %>" />
+    </div>
+    <div class="col-sm-6">
+      <div> y </div>
+      <input type="text" class="y-prop property" value="<%= y %>" />
+    </div>
+  </div>
   <div class="row">
     <div class="col-sm-6">
       <div> Width </div>
@@ -13,6 +25,14 @@
     <div class="col-sm-6">
       <div> Height </div>
       <input type="text" class="height-prop property" value="<%= height %>" />
+    </div>
+  </div>
+
+  <h5> Content </h5>
+  <div class="row">
+    <div class="col-sm-12">
+      <div> URL </div>
+      <input type="text" class="url-prop property" value="<%= url %>" />
     </div>
   </div>
 <% } %>

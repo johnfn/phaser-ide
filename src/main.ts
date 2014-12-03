@@ -91,7 +91,7 @@ class EntityModel extends Backbone.Model {
     this.x = 0;
     this.y = 0;
 
-    this.url = "";
+    this.url = "<no url>";
   }
 
   set width(val:number) { this.set('width', val); }
