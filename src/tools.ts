@@ -78,17 +78,8 @@ class ToolSettingsView extends MagicView<Backbone.Model> {
 
   updateProperty(e:Event) {
     var $el:JQuery = $(e.currentTarget);
-    var classes:string[] = $el[0].className.split(" ");
-    var propname:string = "";
 
-    for (var i = 0; i < classes.length; i++) {
-      if (classes[i].indexOf("-prop") !== -1) {
-        propname = classes[i].substring(0, classes[i].length - "-prop".length);
-        break;
-      }
-    }
-
-    console.log(propname);
+    this.model.set($el.data('prop'), $el.val());
   }
 }
 
