@@ -93,6 +93,7 @@ class Entity extends Phaser.Sprite {
 
 class MainState extends Phaser.State {
   public spriteCanvas:SpriteCanvas;
+  public entities:Entity[] = [];
 
   public preload():void {
     // fw, fh, num frames,
@@ -112,19 +113,36 @@ class MainState extends Phaser.State {
     G.game.input.onDown.add(this.mouseDown, this);
   }
 
+  elemUnderMouse():Entity {
+    var mx:number = G.game.input.x;
+    var my:number = G.game.input.y;
+
+    for (var i = 0; i < this.entities.length; i++) {
+      var ent:Entity = this.entities[i];
+
+      if ( ent.x <= mx && ent.x + ent.width >= mx &&
+           ent.y <= my && ent.y + ent.height >= my) {
+        return ent;
+      }
+    }
+
+    return null;
+  }
+
   public mouseDown() {
     var tool:ToolbarItem = G.ide.selectedTool();
 
-    switch (tool.get('name')) {
-      case 'Inspector':
-        console.log('inspector');
-        // figure out what entity you clicked on
+    switch (ToolType[tool.name]) {
+      case ToolType.Inspector:
+        console.log(this.elemUnderMouse());
         // grab it's model
         // send it to the inspector view
+
         break;
-      case 'Add Item':
+      case ToolType.AddItem:
         var e:Entity = new Entity(G.game.input.x, G.game.input.y);
 
+        this.entities.push(e);
         break
       default:
         throw "unsupported tool";
