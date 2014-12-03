@@ -17,10 +17,11 @@
        ✔ I need my loader thing @done (14-12-01 18:19)
        ✔ tool properties section @done (14-12-01 23:31)
        ☐ kbd shortcuts
-       ☐ Say if there's no model.
+       ✔ Say if there's no model. @done (14-12-03 14:43)
        ☐ Otherwise, render out the model.
-         ☐ Request the sprite to get its model.
-         ☐ Send it to properties and force a rerender
+         ✔ Request the sprite to get its model. @done (14-12-03 14:43)
+         ✔ Send it to properties and force a rerender @done (14-12-03 14:43)
+           ☐ Indicate visually that something changed
          ☐ On change, change the model
          ☐ In the sprite. listen to change events on the model and change sprite accordingly
        ☐ Refactoring:

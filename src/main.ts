@@ -98,6 +98,7 @@ class EntityModel extends Backbone.Model {
 
 class Entity extends Phaser.Sprite {
   model:EntityModel;
+  selectionBox:Phaser.Graphics;
 
   constructor(x:number, y:number) {
     super(G.game, x, y, "default");
@@ -105,16 +106,33 @@ class Entity extends Phaser.Sprite {
     G.state.spriteCanvas.add(this);
 
     this.model = new EntityModel();
+
+    this.selectionBox = G.game.add.graphics(this.x, this.y);
+
+    this.drawSelectionBox();
+    this.selectionBox.visible = false;
+  }
+
+  drawSelectionBox() {
+    this.selectionBox.lineStyle(1, 0x000, 1);
+    this.selectionBox.drawRect(-2, -2, this.width + 4, this.height + 4);
   }
 
   getModel():EntityModel {
     return this.model;
+  }
+
+  // graphically indicate if this entity has been selected or not
+  public select(on:boolean) {
+    this.selectionBox.visible = on;
   }
 }
 
 class MainState extends Phaser.State {
   public spriteCanvas:SpriteCanvas;
   public entities:Entity[] = [];
+
+  previouslySelectedEntity:Entity;
 
   public preload():void {
     // fw, fh, num frames,
@@ -159,10 +177,17 @@ class MainState extends Phaser.State {
         // send it to the inspector view
 
         var ent:Entity = this.elemUnderMouse();
+
         if (ent !== null) {
-          debugger;
           G.ide.inspect(ent.getModel());
+
+          ent.select(true);
         }
+
+        if (this.previouslySelectedEntity) {
+          this.previouslySelectedEntity.select(false);
+        }
+        this.previouslySelectedEntity = ent;
 
         break;
       case ToolType.AddItem:
