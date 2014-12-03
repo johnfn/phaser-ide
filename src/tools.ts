@@ -15,7 +15,8 @@ class ToolbarTypeHelpers {
   }
 
   static classType(tool:ToolType):typeof ToolSettingsView {
-    // dang it! maybe someone smarter can figure this out
+    // dang it! maybe someone smarter than me can figure this out
+
     switch (tool) {
       case ToolType.Inspector: return InspectorProperties;
       case ToolType.AddItem: return AddItemProperties;
@@ -100,14 +101,17 @@ class ToolProperties extends MagicView<Backbone.Model> {
     return this;
   }
 
+  public renderSelectedTool() {
+    (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(tool.get('name')))).visible = true;
+  }
+
   set selectedTool(tool:ToolbarItem) {
     if (this._selectedTool) {
       (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(this._selectedTool.get('name')))).visible = false;
     }
 
     this._selectedTool = tool;
-
-    (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(tool.get('name')))).visible = true;
+    this.renderSelectedTool();
   }
 }
 
