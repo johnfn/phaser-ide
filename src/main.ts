@@ -15,7 +15,7 @@ class G {
 
 // more globals
 class Editor {
-  static toolbarNames:string[] = ['Inspect', 'Add Item'];
+  static toolbarNames:string[] = ['Inspector', 'Add Item'];
 }
 
 var fileCache:{[key: string]: string} = {};
@@ -121,8 +121,8 @@ class MainState extends Phaser.State {
     var tool:ToolbarItem = G.ide.selectedTool();
 
     switch (tool.get('name')) {
-      case 'Inspect':
-        console.log('inspect');
+      case 'Inspector':
+        console.log('inspector');
         // figure out what entity you clicked on
         // grab it's model
         // send it to the inspector view

@@ -1,5 +1,11 @@
 /// <reference path="refs.d.ts" />
 
+class ToolbarInfo {
+  static data = {
+    'Inspect' : { propertiesTemplate: 'inspector-properties', propEl: '.inspector-properties'}
+  }
+}
+
 class ToolbarItemCollection extends Backbone.Collection<ToolbarItem> {
   constructor() {
     super();
@@ -23,11 +29,9 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
   template:Template = F.loadTemplate('tool');
   dialog:DialogWidget;
 
-  events() {
-    return {
-      'click a': 'switchTool'
-    }
-  }
+  events() {return{
+    'click a': 'switchTool'
+  }}
 
   switchTool() {
     this.trigger('switch-tool', this.model);
@@ -93,7 +97,7 @@ class ToolProperties extends MagicView<Backbone.Model> {
 
   modelToClassName(tool:ToolbarItem) {
     switch (tool.get('name')) {
-      case 'Inspect':
+      case 'Inspector':
         return '.inspector-properties';
         break;
       case 'Add Item':
