@@ -21,7 +21,7 @@
        ☐ Otherwise, render out the model.
          ✔ Request the sprite to get its model. @done (14-12-03 14:43)
          ✔ Send it to properties and force a rerender @done (14-12-03 14:43)
-           ☐ Indicate visually that something changed
+           ✔ Indicate visually that something changed @done (14-12-03 15:40)
          ☐ On change, change the model
          ☐ In the sprite. listen to change events on the model and change sprite accordingly
        ☐ Refactoring:

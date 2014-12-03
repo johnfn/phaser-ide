@@ -105,12 +105,24 @@ class Entity extends Phaser.Sprite {
 
     G.state.spriteCanvas.add(this);
 
-    this.model = new EntityModel();
-
     this.selectionBox = G.game.add.graphics(this.x, this.y);
 
     this.drawSelectionBox();
     this.selectionBox.visible = false;
+
+    this.setupModel();
+  }
+
+  setupModel() {
+    this.model = new EntityModel();
+
+    this.model.on('change:width', (model:EntityModel) => {
+      console.log('w change');
+    });
+
+    this.model.on('change:height', (model:EntityModel) => {
+      console.log('h change');
+    });
   }
 
   drawSelectionBox() {
