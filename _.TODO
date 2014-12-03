@@ -22,10 +22,11 @@
          ✔ Request the sprite to get its model. @done (14-12-03 14:43)
          ✔ Send it to properties and force a rerender @done (14-12-03 14:43)
            ✔ Indicate visually that something changed @done (14-12-03 15:40)
-         ☐ When you click nothing, also trigger rerender after clearing out model
+         ✔ When you click nothing, also trigger rerender after clearing out model @done (14-12-03 18:46)
          ☐ On change, change the model
+         ☐ Definitely some refactoring stuff is possible in inspector-properties
          ☐ In the sprite. listen to change events on the model and change sprite accordingly
-       ☐ Refactoring:
+       ✔ Refactoring: @done (14-12-03 18:46)
          ✔ subviews could also be a function (actually only a fn) @done (14-12-01 20:19)
          ✔ Now ToolProperties could see a refactor @done (14-12-03 14:24)
        ☐ Bootstrap dialog
