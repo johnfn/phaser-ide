@@ -67,6 +67,12 @@ class PhaserIDE extends MagicView<Backbone.Model> {
 
     return toolbar.selectedTool;
   }
+
+  public inspect(m:EntityModel) {
+    var properties:ToolProperties = <ToolProperties> this.getSubview('.tool-properties');
+
+    properties.setModel(m);
+  }
 }
 
 class SpriteCanvas extends Phaser.Group {
@@ -99,6 +105,10 @@ class Entity extends Phaser.Sprite {
     G.state.spriteCanvas.add(this);
 
     this.model = new EntityModel();
+  }
+
+  getModel():EntityModel {
+    return this.model;
   }
 }
 
@@ -145,9 +155,14 @@ class MainState extends Phaser.State {
 
     switch (ToolType[tool.name]) {
       case ToolType.Inspector:
-        console.log(this.elemUnderMouse());
         // grab it's model
         // send it to the inspector view
+
+        var ent:Entity = this.elemUnderMouse();
+        if (ent !== null) {
+          debugger;
+          G.ide.inspect(ent.getModel());
+        }
 
         break;
       case ToolType.AddItem:

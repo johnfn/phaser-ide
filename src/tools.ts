@@ -109,12 +109,24 @@ class ToolProperties extends MagicView<Backbone.Model> {
     return this;
   }
 
-  public renderSelectedTool() {
+  getActiveSubview():ToolSettingsView {
     var type:number = ToolType[this._selectedTool.name];
     var subview:ToolSettingsView = (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elPropertiesName(type)));
 
+    return subview;
+  }
+
+  public renderSelectedTool() {
+    var subview:ToolSettingsView = this.getActiveSubview();
+
     subview.visible = true;
     subview.render();
+  }
+
+  public setModel(m:EntityModel) {
+    this.getActiveSubview().model = m;
+
+    this.renderSelectedTool();
   }
 
   set selectedTool(tool:ToolbarItem) {

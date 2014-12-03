@@ -50,7 +50,9 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
 
   // pull this out so we could override it in a superclass
   renderEl():void {
-    this.el.innerHTML = this.template(this.model ? this.model.toJSON() : { __no_model: true });
+    this.el.innerHTML = this.template(_.extend({
+      __no_model: !this.model
+    }, this.model ? this.model.toJSON() : {}))
   }
 
   render():Backbone.View<T> {

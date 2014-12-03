@@ -16,6 +16,7 @@
        ✔ I need my modal thing @done (14-12-01 18:19)
        ✔ I need my loader thing @done (14-12-01 18:19)
        ✔ tool properties section @done (14-12-01 23:31)
+       ☐ kbd shortcuts
        ☐ Say if there's no model.
        ☐ Otherwise, render out the model.
          ☐ Request the sprite to get its model.
