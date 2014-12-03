@@ -13,11 +13,6 @@ class G {
   static ide:PhaserIDE;
 }
 
-// more globals
-class Editor {
-  static toolbarNames:string[] = ['Inspector', 'Add Item'];
-}
-
 var fileCache:{[key: string]: string} = {};
 
 // global functions

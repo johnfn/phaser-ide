@@ -1,8 +1,26 @@
 /// <reference path="refs.d.ts" />
 
-class ToolbarInfo {
-  static data = {
-    'Inspect' : { propertiesTemplate: 'inspector-properties', propEl: '.inspector-properties'}
+enum ToolType { Inspector, AddItem };
+
+class ToolbarTypeHelpers {
+  static toolToString(tool:ToolType):string {
+    return ToolType[tool];
+  }
+  static toolTemplate(tool:ToolType):string {
+    return ToolbarTypeHelpers.toolTemplate(tool).toLowerCase().replace(/ /g, "-");
+  }
+
+  static elName(tool:ToolType):string {
+    return "." + ToolbarTypeHelpers.toolTemplate(tool);
+  }
+
+  static classType(tool:ToolType):typeof ToolSettingsView {
+    // dang it! maybe someone smarter can figure this out
+    switch (tool) {
+      case ToolType.Inspector: return InspectorProperties;
+      case ToolType.AddItem: return AddItemProperties;
+      default: throw "unrecognized tool type";
+    }
   }
 }
 
@@ -10,11 +28,9 @@ class ToolbarItemCollection extends Backbone.Collection<ToolbarItem> {
   constructor() {
     super();
 
-    var items:string[] = Editor.toolbarNames;
-
-    for (var i = 0; i < items.length; i++) {
+    for (var toolName in ToolType) {
       var item:ToolbarItem = new ToolbarItem();
-      item.set('name', items[i]);
+      item.set('name', toolName);
 
       this.add(item);
     }
@@ -35,22 +51,6 @@ class ToolbarItemView extends MagicView<ToolbarItem> {
 
   switchTool() {
     this.trigger('switch-tool', this.model);
-
-    // TODO:: not in the right place...hah
-    /*
-    this.dialog = new DialogWidget({
-      title: 'Add Game Entity',
-      body: 'Lets add a game entity!',
-      buttons: [{
-        title: 'Ok!'
-      }, {
-        title: 'Cancel',
-        type: "btn-danger",
-        clickCallback: () => { console.log(' you cancelled... ya dumb'); }
-      }]
-    });
-    this.dialog.render().$el.appendTo(this.$el);
-    */
 
     return false;
   }
@@ -79,10 +79,15 @@ class ToolProperties extends MagicView<Backbone.Model> {
   _selectedTool:ToolbarItem;
 
   subviews():SubviewList {
-    return {
-      '.inspector-properties': (_attrs) => { return new InspectorProperties(_attrs); },
-      '.add-item-properties': (_attrs) => { return new AddItemProperties(_attrs); }
-    };
+    var subviews:{[key: string]: (attrs?:any) => ToolSettingsView} = {};
+
+    for (var toolName in ToolType) {
+      subviews[ToolbarTypeHelpers.elName(toolName)] = (_attrs) => {
+        return new (ToolbarTypeHelpers.classType(toolName));
+      };
+    }
+
+    return subviews
   }
 
   render():Backbone.View<Backbone.Model> {
@@ -95,28 +100,14 @@ class ToolProperties extends MagicView<Backbone.Model> {
     return this;
   }
 
-  modelToClassName(tool:ToolbarItem) {
-    switch (tool.get('name')) {
-      case 'Inspector':
-        return '.inspector-properties';
-        break;
-      case 'Add Item':
-        return '.add-item-properties';
-        break;
-      default:
-        throw 'idk';
-        break;
-    }
-  }
-
   set selectedTool(tool:ToolbarItem) {
     if (this._selectedTool) {
-      (<ToolSettingsView> this.getSubview(this.modelToClassName(this._selectedTool))).visible = false;
+      (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(this._selectedTool.get('name')))).visible = false;
     }
 
     this._selectedTool = tool;
 
-    (<ToolSettingsView> this.getSubview(this.modelToClassName(tool))).visible = true;
+    (<ToolSettingsView> this.getSubview(ToolbarTypeHelpers.elName(tool.get('name')))).visible = true;
   }
 }
 
@@ -151,3 +142,20 @@ class Toolbar extends MagicListView<Backbone.Model> {
     return this._selectedTool;
   }
 }
+
+
+// TODO:: not in the right place...hah
+/*
+this.dialog = new DialogWidget({
+  title: 'Add Game Entity',
+  body: 'Lets add a game entity!',
+  buttons: [{
+    title: 'Ok!'
+  }, {
+    title: 'Cancel',
+    type: "btn-danger",
+    clickCallback: () => { console.log(' you cancelled... ya dumb'); }
+  }]
+});
+this.dialog.render().$el.appendTo(this.$el);
+*/
