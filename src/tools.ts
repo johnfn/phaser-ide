@@ -7,7 +7,7 @@ class ToolbarTypeHelpers {
     return ToolType[tool];
   }
   static toolTemplate(tool:ToolType):string {
-    return ToolbarTypeHelpers.toolTemplate(tool).toLowerCase().replace(/ /g, "-");
+    return ToolbarTypeHelpers.toolToString(tool).toLowerCase().replace(/ /g, "-");
   }
 
   static elName(tool:ToolType):string {
@@ -29,9 +29,9 @@ class ToolbarItemCollection extends Backbone.Collection<ToolbarItem> {
   constructor() {
     super();
 
-    for (var toolName in ToolType) {
+    for (var toolName in EnumEx.getValues(ToolType)) {
       var item:ToolbarItem = new ToolbarItem();
-      item.set('name', toolName);
+      item.set('name', ToolType[toolName]);
 
       this.add(item);
     }
@@ -82,7 +82,7 @@ class ToolProperties extends MagicView<Backbone.Model> {
   subviews():SubviewList {
     var subviews:{[key: string]: (attrs?:any) => ToolSettingsView} = {};
 
-    for (var toolName in ToolType) {
+    for (var toolName in EnumEx.getValues(ToolType)) {
       subviews[ToolbarTypeHelpers.elName(toolName)] = (_attrs) => {
         return new (ToolbarTypeHelpers.classType(toolName));
       };
