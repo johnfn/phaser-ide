@@ -76,7 +76,18 @@ class SpriteCanvas extends Phaser.Group {
 }
 
 class EntityModel extends Backbone.Model {
+  constructor() {
+    super();
 
+    this.width = 32;
+    this.height = 32;
+  }
+
+  set width(val:number) { this.set('width', val); }
+  get width():number { return this.get('width'); }
+
+  set height(val:number) { this.set('height', val); }
+  get height():number { return this.get('height'); }
 }
 
 class Entity extends Phaser.Sprite {

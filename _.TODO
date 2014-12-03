@@ -18,6 +18,10 @@
        ✔ tool properties section @done (14-12-01 23:31)
        ☐ Say if there's no model.
        ☐ Otherwise, render out the model.
+         ☐ Request the sprite to get its model.
+         ☐ Send it to properties and force a rerender
+         ☐ On change, change the model
+         ☐ In the sprite. listen to change events on the model and change sprite accordingly
        ☐ Refactoring:
          ✔ subviews could also be a function (actually only a fn) @done (14-12-01 20:19)
          ✔ Now ToolProperties could see a refactor @done (14-12-03 14:24)
