@@ -97,3 +97,32 @@ class ButtonWidget extends Backbone.View<Backbone.Model> {
     return this;
   }
 }
+
+class ViewGroup extends MagicView<Backbone.Model> {
+  attrs:any;
+
+  constructor(attrs:any) {
+    attrs.tagName = "div";
+
+    super(attrs);
+
+    this.attrs = attrs;
+  }
+
+  render():ViewGroup {
+    var subViews:MagicView[] = <MagicView[]> this.attrs.subViews;
+
+    for (var i = 0; i < subViews.length; i++) {
+      new subViews[i]({
+        el: $("<div>").appendTo(this.$el),
+        model: this.model
+      });
+    }
+
+    return this;
+  }
+}
+
+class FormItem extends MagicView<Backbone.Model> {
+  
+}

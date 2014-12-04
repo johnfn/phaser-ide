@@ -97,7 +97,7 @@ class EntityModel extends Backbone.Model {
       { name: 'x', type: 'int' },
       { name: 'y', type: 'int' }
     ],[
-      { name: 'Content' }
+      { name: 'Content', type: 'heading' }
     ],[
       { name: 'url', type: 'string' }
     ]];

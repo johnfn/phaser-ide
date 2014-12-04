@@ -88,6 +88,10 @@ class ToolSettingsView extends MagicView<Backbone.Model> {
 
 class InspectorProperties extends ToolSettingsView {
   template:Template = F.loadTemplate('inspector-properties');
+
+  subviews():SubviewList {
+    var subviews:{[key: string]: (attrs?:any) => }
+  }
 }
 
 class AddItemProperties extends ToolSettingsView {
