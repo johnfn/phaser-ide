@@ -94,6 +94,13 @@ class EntityModel extends Backbone.Model {
     this.url = "<no url>";
   }
 
+  validate(attrs, options) {
+    if (!isNaN(attrs.width)) return "width must be a number.";
+    if (!isNaN(attrs.height)) return "height must be a number.";
+    if (!isNaN(attrs.x)) return "x must be a number.";
+    if (!isNaN(attrs.y)) return "y must be a number.";
+  }
+
   set width(val:number) { this.set('width', val); }
   get width():number { return this.get('width'); }
 

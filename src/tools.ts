@@ -79,7 +79,14 @@ class ToolSettingsView extends MagicView<Backbone.Model> {
   updateProperty(e:Event) {
     var $el:JQuery = $(e.currentTarget);
 
-    this.model.set($el.data('prop'), $el.val());
+    this.model.validationError = "";
+    this.model.set($el.data('prop'), $el.val(), { validate: true });
+
+    if (this.model.validationError !== "") {
+      $el.css('color', 'red');
+    } else {
+      $el.css('color', 'black');
+    }
   }
 }
 

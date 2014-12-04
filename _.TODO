@@ -24,7 +24,9 @@
            ✔ Indicate visually that something changed @done (14-12-03 15:40)
          ✔ When you click nothing, also trigger rerender after clearing out model @done (14-12-03 18:46)
          ✔ On change, change the model @done (14-12-03 18:55)
-         ☐ validation
+         ✔ validation @done (14-12-03 19:15)
+           ☐ Some bugs. wont reset color?
+         ☐ Just list out props and types in EntityModel and elsewhere.
          ☐ Definitely some refactoring stuff is possible in inspector-properties
          ☐ In the sprite. listen to change events on the model and change sprite accordingly
        ✔ Refactoring: @done (14-12-03 18:46)
