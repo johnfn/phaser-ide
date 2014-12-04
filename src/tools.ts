@@ -82,11 +82,7 @@ class ToolSettingsView extends MagicView<Backbone.Model> {
     this.model.validationError = "";
     this.model.set($el.data('prop'), $el.val(), { validate: true });
 
-    if (this.model.validationError !== "") {
-      $el.css('color', 'red');
-    } else {
-      $el.css('color', 'black');
-    }
+    $el.css('color', this.model.validationError === "" ? 'black' : 'red');
   }
 }
 

@@ -81,7 +81,45 @@ class SpriteCanvas extends Phaser.Group {
   }
 }
 
+interface ModelProperty {
+  name:string;
+  type:string;
+}
+
 class EntityModel extends Backbone.Model {
+  static layout():ModelProperty[][] {
+    return [[
+      { name: 'Location', type: 'heading' }
+    ],[
+      { name: 'width', type: 'int' },
+      { name: 'height', type: 'int' }
+    ],[
+      { name: 'x', type: 'int' },
+      { name: 'y', type: 'int' }
+    ],[
+      { name: 'Content' }
+    ],[
+      { name: 'url', type: 'string' }
+    ]];
+  }
+
+  static props():ModelProperty[] {
+    var layout:ModelProperty[][] = EntityModel.layout();
+    var result:ModelProperty[] = [];
+
+    for (var i = 0; i < layout.length; i++) {
+      var inner:ModelProperty[] = layout[i];
+
+      if (inner.length === 1 && inner[0].type === 'heading') continue;
+
+      for (var j = 0; j < layout[i].length; j++) {
+        result.push(layout[i][j]);
+      }
+    }
+
+    return result;
+  }
+
   constructor() {
     super();
 
