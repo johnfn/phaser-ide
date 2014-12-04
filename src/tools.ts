@@ -117,7 +117,7 @@ class InspectorProperties extends ToolSettingsView {
     var i = 0;
 
     _.each(items, (itemGroup:ModelProperty[]) => {
-      subviews['.' + ++i] = (_attrs) => {
+      subviews['.' + i++] = (_attrs) => {
 
         if (itemGroup.length === 1 && itemGroup[0].type === 'heading') {
           // heading
