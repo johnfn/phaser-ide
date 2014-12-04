@@ -28,6 +28,10 @@ class F {
     return _.template(fileCache[file]);
   }
 
+  static isNumber(val) {
+    return /^[0-9]+$/.test(val);
+  }
+
   // merge 2 objects together, returning the result.
   // no more overwriting objects any more, that was annoying.
   static merge(o1:any, o2:any) {
@@ -132,11 +136,12 @@ class EntityModel extends Backbone.Model {
     this.url = "<no url>";
   }
 
+
   validate(attrs, options) {
-    if (!isNaN(attrs.width)) return "width must be a number.";
-    if (!isNaN(attrs.height)) return "height must be a number.";
-    if (!isNaN(attrs.x)) return "x must be a number.";
-    if (!isNaN(attrs.y)) return "y must be a number.";
+    if (!F.isNumber(attrs.width)) return "width must be a number.";
+    if (!F.isNumber(attrs.height)) return "height must be a number.";
+    if (!F.isNumber(attrs.x)) return "x must be a number.";
+    if (!F.isNumber(attrs.y)) return "y must be a number.";
 
     if (attrs.width < 0) return "width must be greater than 0."
     if (attrs.height < 0) return "height must be greater than 0."

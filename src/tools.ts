@@ -73,16 +73,21 @@ class ToolSettingsView extends MagicView<Backbone.Model> {
   }
 
   events() {return{
-    'keydown .property-dynamic': 'updateProperty'
+    'keyup .property-dynamic': 'updateProperty'
   }}
 
   updateProperty(e:Event) {
     var $el:JQuery = $(e.currentTarget);
 
-    this.model.validationError = "";
-    this.model.set($el.data('prop'), $el.val(), { validate: true });
+    this.model.set($el.data('prop'), $el.val()); // TODO: pass { validate : true }
 
-    $el.css('color', this.model.validationError === "" ? 'black' : 'red');
+    var valid:boolean = this.model.isValid();
+
+    $el.css('color', valid ? 'black' : 'red');
+
+    if (!valid) {
+      console.log(this.model.validationError);
+    }
   }
 }
 
