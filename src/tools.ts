@@ -90,7 +90,29 @@ class InspectorProperties extends ToolSettingsView {
   template:Template = F.loadTemplate('inspector-properties');
 
   subviews():SubviewList {
-    var subviews:{[key: string]: (attrs?:any) => }
+    var subviews:{[key: string]: (attrs?:any) => MagicView<Backbone.Model>} = {};
+
+    if (!this.model) return subviews;
+
+    // TODO - use layout and handle groups properly.
+    var props:ModelProperty[] = EntityModel.props();
+
+    for (var i = 0; i < props.length; i++) {
+      subviews['.' + i] = (_attrs) => {
+        return new FormItem(F.merge(F.merge(_attrs, {model: this.model}), {
+          propName: props[i].name
+        }));
+      }
+    }
+  }
+
+  renderEl() {
+    super.renderEl();
+
+    // add containers for every subview
+    for (var elClassName in this.subviews()) {
+      this.$('.property-container').append($('<div>', { 'class': elClassName }));
+    }
   }
 }
 
@@ -104,6 +126,11 @@ class ToolProperties extends MagicView<Backbone.Model> {
 
   subviews():SubviewList {
     var subviews:{[key: string]: (attrs?:any) => ToolSettingsView} = {};
+
+    // TODO: there's no need for me to have to hardcode the class names. just
+    // generate them programmatically.
+
+    // add each tool as a subview.
 
     EnumEx.loopValues(ToolType, (toolName) => {
       subviews[ToolbarTypeHelpers.elPropertiesName(toolName)] = (_attrs) => {

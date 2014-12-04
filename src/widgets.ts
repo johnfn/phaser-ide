@@ -110,7 +110,8 @@ class ViewGroup extends MagicView<Backbone.Model> {
   }
 
   render():ViewGroup {
-    var subViews:MagicView[] = <MagicView[]> this.attrs.subViews;
+    // var subViews: (typeof MagicView<Backbone.Model>)[] = <(typeof MagicView<Backbone.Model>)[]> this.attrs.subViews;
+    var subViews = this.attrs.subViews;
 
     for (var i = 0; i < subViews.length; i++) {
       new subViews[i]({
@@ -130,7 +131,7 @@ class FormItem extends MagicView<Backbone.Model> {
     var templAttrs = _.extend({}, this.model.toJSON(), {
       colsWide: this.attrs.colsWide || 6,
       propName: this.attrs.propName,
-      value: this.model.get(propName)
+      value: this.model.get(this.attrs.propName)
     });
 
     this.el.innerHTML = this.template(templAttrs);
