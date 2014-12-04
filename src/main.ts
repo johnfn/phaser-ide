@@ -137,6 +137,9 @@ class EntityModel extends Backbone.Model {
     if (!isNaN(attrs.height)) return "height must be a number.";
     if (!isNaN(attrs.x)) return "x must be a number.";
     if (!isNaN(attrs.y)) return "y must be a number.";
+
+    if (attrs.width < 0) return "width must be greater than 0."
+    if (attrs.height < 0) return "height must be greater than 0."
   }
 
   set width(val:number) { this.set('width', val); }

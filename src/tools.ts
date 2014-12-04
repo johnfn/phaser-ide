@@ -100,7 +100,8 @@ class InspectorProperties extends ToolSettingsView {
     _.each(_.range(props.length), (i) => {
       subviews['.' + i] = (_attrs) => {
         return new FormItem(F.merge(F.merge(_attrs, {model: this.model}), {
-          propName: props[i].name
+          propName: props[i].name,
+          colsWide: props[i].type === 'heading' ? 12 : 6
         }));
       }
     });
