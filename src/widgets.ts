@@ -100,23 +100,24 @@ class ButtonWidget extends Backbone.View<Backbone.Model> {
 
 class FormItemGroup extends MagicView<Backbone.Model> {
   attrs:any;
+  template:Template = F.loadTemplate('form-group')
+  _subviews:Array<(_attrs:any) => MagicView<Backbone.Model>>;
 
   // TODO: Interfacethis
-  constructor(attrs:any, subviews: Array<(_attrs:any) => MagicView<Backbone.Model>>) {
-    attrs.tagName = "div";
+  // TODO: instead of using this, i should just be using my MagicListView, which should have an option to just insert things generically
 
+  constructor(attrs:any, subviews: Array<(_attrs:any) => MagicView<Backbone.Model>>) {
     super(attrs);
 
     this.attrs = attrs;
+    this._subviews = subviews; //separate for typing
   }
 
   render():FormItemGroup {
     // var subViews: (typeof MagicView<Backbone.Model>)[] = <(typeof MagicView<Backbone.Model>)[]> this.attrs.subViews;
-    var subviews = this.attrs.subviews;
-
-    for (var i = 0; i < subviews.length; i++) {
-      subviews[i]({
-        el: $("<div>").appendTo(this.$el),
+    for (var i = 0; i < this._subviews.length; i++) {
+      this._subviews[i]({
+        el: $("<div>").appendTo(this.$('.form-group-container')),
         model: this.model
       });
     }
