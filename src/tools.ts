@@ -97,21 +97,28 @@ class InspectorProperties extends ToolSettingsView {
     // TODO - use layout and handle groups properly.
     var props:ModelProperty[] = EntityModel.props();
 
-    for (var i = 0; i < props.length; i++) {
+    _.each(_.range(props.length), (i) => {
       subviews['.' + i] = (_attrs) => {
         return new FormItem(F.merge(F.merge(_attrs, {model: this.model}), {
           propName: props[i].name
         }));
       }
-    }
+    });
+
+    return subviews;
   }
 
   renderEl() {
     super.renderEl();
 
+    var subviews:SubviewList = this.subviews();
+    var i = 0;
+
     // add containers for every subview
-    for (var elClassName in this.subviews()) {
-      this.$('.property-container').append($('<div>', { 'class': elClassName }));
+    for (var _unused in subviews) {
+
+      this.$('.property-container').append($('<div>', { 'class': i }));
+      i++;
     }
   }
 }
