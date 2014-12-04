@@ -100,6 +100,7 @@ class InspectorProperties extends ToolSettingsView {
     if (!this.model) return subviews;
 
     // TODO - use layout and handle groups properly.
+    /*
     var props:ModelProperty[] = EntityModel.props();
 
     _.each(_.range(props.length), (i) => {
@@ -109,6 +110,29 @@ class InspectorProperties extends ToolSettingsView {
           colsWide: props[i].type === 'heading' ? 12 : 6
         }));
       }
+    });
+    */
+
+    var items:ModelProperty[][] = EntityModel.layout();
+    var i = 0;
+
+    _.each(items, (itemGroup:ModelProperty[]) => {
+      subviews['.' + ++i] = (_attrs) => {
+
+        if (itemGroup.length === 1 && itemGroup[0].type === 'heading') {
+          // heading
+          return new FormHeading(F.merge(_attrs, itemGroup));
+        } else {
+          // group 
+          var subviewsForGroupView:Array<(_attrs:any) => MagicView<Backbone.Model>> = _.map(itemGroup, (item:ModelProperty) => {
+            return (_attrs) => {
+              return new FormItem(_.extend({}, _attrs, { model: this.model }));
+            };
+          });
+
+          return new FormItemGroup(_attrs, subviewsForGroupView);
+        }
+      };
     });
 
     return subviews;

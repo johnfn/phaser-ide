@@ -98,10 +98,11 @@ class ButtonWidget extends Backbone.View<Backbone.Model> {
   }
 }
 
-class ViewGroup extends MagicView<Backbone.Model> {
+class FormItemGroup extends MagicView<Backbone.Model> {
   attrs:any;
 
-  constructor(attrs:any) {
+  // TODO: Interfacethis
+  constructor(attrs:any, subviews: Array<(_attrs:any) => MagicView<Backbone.Model>>) {
     attrs.tagName = "div";
 
     super(attrs);
@@ -109,12 +110,12 @@ class ViewGroup extends MagicView<Backbone.Model> {
     this.attrs = attrs;
   }
 
-  render():ViewGroup {
+  render():FormItemGroup {
     // var subViews: (typeof MagicView<Backbone.Model>)[] = <(typeof MagicView<Backbone.Model>)[]> this.attrs.subViews;
-    var subViews = this.attrs.subViews;
+    var subviews = this.attrs.subviews;
 
-    for (var i = 0; i < subViews.length; i++) {
-      new subViews[i]({
+    for (var i = 0; i < subviews.length; i++) {
+      subviews[i]({
         el: $("<div>").appendTo(this.$el),
         model: this.model
       });
@@ -136,4 +137,8 @@ class FormItem extends MagicView<Backbone.Model> {
 
     this.el.innerHTML = this.template(templAttrs);
   }
+}
+
+class FormHeading extends MagicView<Backbone.Model> {
+  template:Template = F.loadTemplate('form-heading');
 }
