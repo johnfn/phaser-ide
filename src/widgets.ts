@@ -124,5 +124,15 @@ class ViewGroup extends MagicView<Backbone.Model> {
 }
 
 class FormItem extends MagicView<Backbone.Model> {
-  
+  template:Template = F.loadTemplate('form-item');
+
+  renderEl():void {
+    var templAttrs = _.extend({}, this.model.toJSON(), {
+      colsWide: this.attrs.colsWide || 6,
+      propName: this.attrs.propName,
+      value: this.model.get(propName)
+    });
+
+    this.el.innerHTML = this.template(templAttrs);
+  }
 }
