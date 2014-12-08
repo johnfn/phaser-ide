@@ -142,4 +142,10 @@ class FormItem extends MagicView<Backbone.Model> {
 
 class FormHeading extends MagicView<Backbone.Model> {
   template:Template = F.loadTemplate('form-heading');
+
+  renderEl() {
+    this.el.innerHTML = this.template({
+      content: this.attrs.name
+    });
+  }
 }

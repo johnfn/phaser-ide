@@ -121,9 +121,9 @@ class InspectorProperties extends ToolSettingsView {
 
         if (itemGroup.length === 1 && itemGroup[0].type === 'heading') {
           // heading
-          return new FormHeading(F.merge(_attrs, itemGroup));
+          return new FormHeading(F.merge(_attrs, itemGroup[0]));
         } else {
-          // group 
+          // group
           var subviewsForGroupView:Array<(_attrs:any) => MagicView<Backbone.Model>> = _.map(itemGroup, (item:ModelProperty) => {
             return (_attrs) => {
               return new FormItem(_.extend({}, _attrs, { model: this.model }));
