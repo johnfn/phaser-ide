@@ -99,20 +99,6 @@ class InspectorProperties extends ToolSettingsView {
 
     if (!this.model) return subviews;
 
-    // TODO - use layout and handle groups properly.
-    /*
-    var props:ModelProperty[] = EntityModel.props();
-
-    _.each(_.range(props.length), (i) => {
-      subviews['.' + i] = (_attrs) => {
-        return new FormItem(F.merge(F.merge(_attrs, {model: this.model}), {
-          propName: props[i].name,
-          colsWide: props[i].type === 'heading' ? 12 : 6
-        }));
-      }
-    });
-    */
-
     var items:ModelProperty[][] = EntityModel.layout();
     var i = 0;
 
@@ -125,12 +111,10 @@ class InspectorProperties extends ToolSettingsView {
         } else {
           // group
           var subviewsForGroupView:Array<(_attrs:any) => MagicView<Backbone.Model>> = _.map(itemGroup, (item:ModelProperty) => {
-            return (_attrs) => {
-              return new FormItem(_.extend({}, _attrs, { model: this.model }));
-            };
+            return (_attrs) => new FormItem(F.merge(_attrs, { propName: item.name }))
           });
 
-          return new FormItemGroup(_attrs, subviewsForGroupView);
+          return new FormItemGroup(F.merge(_attrs, { model: this.model }), subviewsForGroupView);
         }
       };
     });

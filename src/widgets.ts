@@ -115,11 +115,15 @@ class FormItemGroup extends MagicView<Backbone.Model> {
 
   render():FormItemGroup {
     // var subViews: (typeof MagicView<Backbone.Model>)[] = <(typeof MagicView<Backbone.Model>)[]> this.attrs.subViews;
+    super.render();
+
     for (var i = 0; i < this._subviews.length; i++) {
-      this._subviews[i]({
+      var subview:MagicView<Backbone.Model> = this._subviews[i]({
         el: $("<div>").appendTo(this.$('.form-group-container')),
         model: this.model
       });
+
+      subview.render();
     }
 
     return this;
