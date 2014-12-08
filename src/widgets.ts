@@ -145,7 +145,7 @@ class FormHeading extends MagicView<Backbone.Model> {
 
   renderEl() {
     this.el.innerHTML = this.template({
-      content: this.attrs.name
+      name: this.attrs.name
     });
   }
 }
