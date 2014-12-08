@@ -213,6 +213,7 @@ class SelectedToolView extends MagicView<ToolbarItem> {
 class Toolbar extends MagicListView<ToolbarItem> {
   private _selectedTool:ToolbarItem;
 
+  listEl:string = ".list-container";
   template:Template = F.loadTemplate('toolbar');
   subview(): typeof MagicView { return ToolbarItemView; }
   subviews():SubviewList {

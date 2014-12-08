@@ -81,8 +81,18 @@ class MagicView<T extends Backbone.Model> extends Backbone.View<T> {
 }
 
 class MagicListView<T extends Backbone.Model> extends MagicView<T> {
+  // if you pass in a listEl, then the list will go in that el - otherwise, it'll just be the entire element.
+  listEl:string = "";
   collection:Backbone.Collection<T>;
   subview(): typeof MagicView { throw "need to implement subview for MagicListView!"; return undefined; }
+
+  initialize(attrs:any) {
+    if (this.listEl == "") {
+      this.tagName = "div";
+    }
+
+    super.initialize(attrs);
+  }
 
   renderEl():void {
     this.el.innerHTML = this.template();
@@ -91,7 +101,7 @@ class MagicListView<T extends Backbone.Model> extends MagicView<T> {
       var subviewType:typeof Backbone.View = this.subview();
       var subview:Backbone.View<T> = new subviewType({ model: m, parent: this });
 
-      subview.setElement($("<div>").appendTo(this.$(".list-container")));
+      subview.setElement($("<div>").appendTo(this.listEl == "" ? this.$el : this.$(this.listEl)));
       subview.render();
     });
   }
