@@ -18,17 +18,18 @@
        ✔ tool properties section @done (14-12-01 23:31)
        ☐ kbd shortcuts
        ✔ Say if there's no model. @done (14-12-03 14:43)
-       ☐ Otherwise, render out the model.
+       ✔ Otherwise, render out the model. @done (14-12-08 22:17)
          ✔ Request the sprite to get its model. @done (14-12-03 14:43)
          ✔ Send it to properties and force a rerender @done (14-12-03 14:43)
            ✔ Indicate visually that something changed @done (14-12-03 15:40)
          ✔ When you click nothing, also trigger rerender after clearing out model @done (14-12-03 18:46)
          ✔ On change, change the model @done (14-12-03 18:55)
          ✔ validation @done (14-12-03 19:15)
-           ☐ Some bugs. wont reset color?
+           ✔ Some bugs. wont reset color? @done (14-12-08 22:18)
          ☐ Just list out props and types in EntityModel and elsewhere.
-         ☐ Definitely some refactoring stuff is possible in inspector-properties
-         ☐ In the sprite. listen to change events on the model and change sprite accordingly
+         ☐ On validate fail, shouldn't make graphic disappear.
+         ✔ Definitely some refactoring stuff is possible in inspector-properties @done (14-12-08 22:32)
+         ✔ In the sprite. listen to change events on the model and change sprite accordingly @done (14-12-08 22:32)
        ✔ Refactoring: @done (14-12-03 18:46)
          ✔ subviews could also be a function (actually only a fn) @done (14-12-01 20:19)
          ✔ Now ToolProperties could see a refactor @done (14-12-03 14:24)

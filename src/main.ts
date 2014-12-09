@@ -183,8 +183,10 @@ class Entity extends Phaser.Sprite {
   setupModel() {
     this.model = new EntityModel();
 
-    this.model.on('change:width', (model:EntityModel) => { this.width = model.get('width'); this.updateProperties(); });
-    this.model.on('change:height', (model:EntityModel) => { this.height = model.get('height'); this.updateProperties(); });
+    this.model.on('change:width', (model:EntityModel) => this.width = model.get('width'));
+    this.model.on('change:height', (model:EntityModel) => this.height = model.get('height'));
+
+    this.model.on('change', () => this.updateProperties());
   }
 
   updateProperties() {

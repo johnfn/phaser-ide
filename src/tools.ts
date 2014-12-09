@@ -99,11 +99,8 @@ class InspectorProperties extends ToolSettingsView {
 
     if (!this.model) return subviews;
 
-    var items:ModelProperty[][] = EntityModel.layout();
-    var i = 0;
-
-    _.each(items, (itemGroup:ModelProperty[]) => {
-      subviews['.' + i++] = (_attrs) => {
+    _.each(EntityModel.layout(), (itemGroup:ModelProperty[], i) => {
+      subviews['.' + i] = (_attrs) => {
 
         if (itemGroup.length === 1 && itemGroup[0].type === 'heading') {
           // heading
