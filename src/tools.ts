@@ -91,6 +91,10 @@ class ToolSettingsView extends MagicView<Backbone.Model> {
   }
 }
 
+interface ViewMaker {
+  (_attrs:any):MagicView<Backbone.Model>
+};
+
 class InspectorProperties extends ToolSettingsView {
   template:Template = F.loadTemplate('inspector-properties');
 
@@ -100,20 +104,19 @@ class InspectorProperties extends ToolSettingsView {
     if (!this.model) return subviews;
 
     _.each(EntityModel.layout(), (itemGroup:ModelProperty[], i) => {
-      subviews['.' + i] = (_attrs) => {
+      var generator:ViewMaker;
 
-        if (itemGroup.length === 1 && itemGroup[0].type === 'heading') {
-          // heading
-          return new FormHeading(F.merge(_attrs, itemGroup[0]));
-        } else {
-          // group
-          var subviewsForGroupView:Array<(_attrs:any) => MagicView<Backbone.Model>> = _.map(itemGroup, (item:ModelProperty) => {
-            return (_attrs) => new FormItem(F.merge(_attrs, { propName: item.name }))
-          });
+      if (itemGroup.length === 1 && itemGroup[0].type === 'heading') {
+        generator = (_attrs) => new FormHeading(F.merge(_attrs, itemGroup[0]));
+      } else {
+        var subviewList:ViewMaker[] = _.map(itemGroup, (item:ModelProperty) => {
+          return (_attrs) => new FormItem(F.merge(_attrs, { propName: item.name }))
+        });
 
-          return new FormItemGroup(F.merge(_attrs, { model: this.model }), subviewsForGroupView);
-        }
-      };
+        generator = (_attrs) => new FormItemGroup(F.merge(_attrs, { model: this.model }), subviewList);
+      }
+
+      subviews['.' + i] = generator;
     });
 
     return subviews;
